@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateColumnsTable extends Migration
+class CreateUsersBoardsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,16 @@ class CreateColumnsTable extends Migration
      */
     public function up()
     {
-        Schema::create('columns', function (Blueprint $table) {
+        Schema::create('users_boards', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('board_id');
-            $table->unsignedInteger('board_position');
-            $table->unsignedInteger('parent_column_id')->nullable();
-            $table->string('name');
-            $table->unsignedInteger('max_cards');
-            $table->unsignedInteger('min_cards');
+            $table->unsignedInteger('user_id');
+
+            $table->foreign('board_id')->references('id')->on('boards');
+            $table->foreign('user_id')->references('id')->on('users');
 
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('board_id')->references('id')->on('boards');
-
         });
     }
 
@@ -36,6 +33,6 @@ class CreateColumnsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('columns');
+        Schema::dropIfExists('users_boards');
     }
 }

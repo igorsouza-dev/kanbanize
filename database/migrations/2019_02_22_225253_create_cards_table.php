@@ -25,6 +25,7 @@ class CreateCardsTable extends Migration
             $table->unsignedInteger('column_position');
             $table->tinyInteger('type');
             $table->tinyInteger('priority');
+            $table->tinyInteger('size');//fibonacci card size - difficulty
 
             $table->timestamps();
             $table->softDeletes();
