@@ -1,8 +1,16 @@
-@extends('layouts.app')
-
-@section('title', 'Kanban')
-@section('content')
-    <h1>Board "{{ $board->name }}"</h1>
-    <kanban :board="{{$board->id}}"></kanban>
-
-@endsection
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ config('app.name', 'Laravel') }}</title>
+    @include('layouts.headers')
+</head>
+<body>
+    <div id="app">
+        <kanban :board="{{$board->id}}"></kanban>
+    </div>
+    @include('layouts.footers')
+</body>
