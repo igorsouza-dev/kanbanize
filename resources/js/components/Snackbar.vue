@@ -2,13 +2,13 @@
     <v-snackbar
             :timeout="timeout"
             top
-            v-model="show"
+            v-model="snack"
     >
         {{ this.text }}
         <v-btn
                 color="pink"
                 flat
-                @click="hideSnack"
+                @click.native="snack=false"
         >
             Close
         </v-btn>
@@ -18,16 +18,18 @@
 <script>
     export default {
         name: "Snackbar",
-        props: ['text', 'show'],
+        props: ['text', 'showsnack'],
         data() {
             return {
-                timeout: 2000
+                timeout: 2000,
+                snack: false
             }
         },
+        beforeMount() {
+            this.snack = this.showsnack;
+        },
         methods: {
-            hideSnack() {
-                this.$emit('close');
-            }
+
         }
     }
 </script>

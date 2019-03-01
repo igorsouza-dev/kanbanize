@@ -27,7 +27,11 @@
 <script>
     export default {
         name: "Toolbar",
-        props: ['title']
+        props: ['title'],
+        data() {
+            return {
+            }
+        }
     }
 </script>
 
