@@ -1,16 +1,15 @@
 <template>
     <v-card color="purple" dark>
-        <v-card-title primary class="title">{{title}}</v-card-title>
-        <v-card-text>{{ lorem }}</v-card-text>
+        <v-card-title primary class="title">{{cardData.title}}</v-card-title>
+        <v-card-text>{{ cardData.description }}</v-card-text>
     </v-card>
 </template>
 
 <script>
     export default {
         name: "Card",
-        props:['title'],
+        props:['cardData'],
         data: () => ({
-            lorem: `Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.`
         })
     }
 </script>

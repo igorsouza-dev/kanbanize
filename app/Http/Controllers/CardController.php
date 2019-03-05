@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Card;
 use Illuminate\Http\Request;
 
 class CardController extends Controller
@@ -34,7 +35,8 @@ class CardController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        return Card::create(request()->all());
     }
 
     /**

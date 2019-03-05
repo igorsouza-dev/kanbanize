@@ -6,15 +6,11 @@
 
         <v-spacer></v-spacer>
 
-        <v-btn icon>
-            <v-icon>search</v-icon>
+        <v-btn icon @click="$emit('newcard')">
+            <v-icon>note_add</v-icon>
         </v-btn>
 
-        <v-btn icon>
-            <v-icon>apps</v-icon>
-        </v-btn>
-
-        <v-btn icon>
+        <v-btn icon @click="$emit('refresh')">
             <v-icon>refresh</v-icon>
         </v-btn>
 
