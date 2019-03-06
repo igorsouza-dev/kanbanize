@@ -76,11 +76,20 @@ class CardController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Card $card
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Card $card)
     {
-        //
+        $card->delete();
+    }
+    public function moveLeft(Card $card)
+    {
+        return response(['status'=>$card->moveLeft()]);
+    }
+    public function moveRight(Card $card)
+    {
+        return response(['status'=>$card->moveRight()]);
     }
 }

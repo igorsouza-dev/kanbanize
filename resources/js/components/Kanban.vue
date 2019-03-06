@@ -6,7 +6,7 @@
         ></toolbar>
         <app-section-loader :status="loader"></app-section-loader>
 
-        <board v-if="!loader" :columns="this.myBoard.columns"></board>
+        <board v-if="!loader" :board="this.myBoard" @deleted="deleted" @moved="moved"></board>
         <new-card-dialog :parent-board="this.myBoard" :dialog="dialog" @updateParent="getColumns" @close="closeDialog"></new-card-dialog>
     </div>
 </template>
@@ -52,7 +52,7 @@
             getColumns() {
                 this.loader = true;
                 axios.get('/api/boards/'+this.board+'/columns').then(response => {
-                    this.columns = response.data;
+                    this.myBoard.columns = response.data;
                     this.loader=false;
                 }).catch(error => {
                     console.error(error);
@@ -61,6 +61,12 @@
             },
             closeDialog() {
                 this.dialog.show =false;
+            },
+            deleted() {
+                this.getColumns();
+            },
+            moved() {
+                this.getColumns();
             }
         },
         mounted() {

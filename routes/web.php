@@ -25,3 +25,5 @@ Route::post('boards/{board}/columns', 'ColumnController@store');
 Route::get('boards/{board}/kanban', 'KanbanController@show');
 Route::resource('cards', 'CardController');
 Route::get('/api/boards/{board}/columns', 'BoardController@columns');
+Route::get('/cards/{card}/move-left', 'CardController@moveLeft');
+Route::get('/cards/{card}/move-right', 'CardController@moveRight');

@@ -98,6 +98,10 @@ class BoardController extends Controller
 
     public function columns(Board $board)
     {
+        $columns = $board->columns;
+        foreach($columns as $column) {
+            $column->cards;
+        }
         return $board->columns;
     }
     public function getBoard(Board $board)
