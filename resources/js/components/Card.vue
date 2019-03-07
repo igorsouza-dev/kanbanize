@@ -1,22 +1,55 @@
 <template>
-    <v-card :color="getColor" dark>
-        <v-card-text>
-            <div>
-                {{cardData.title}}-{{ cardData.order_id }}
-                <v-btn flat icon color="white" @click="deleteCard">
-                    <v-icon small>delete</v-icon>
-                </v-btn>
-                <v-btn flat icon color="white">
-                    <v-icon small>edit</v-icon>
-                </v-btn>
-            </div>
-            <v-divider></v-divider>
+    <!--<v-sheet
+            class="d-flex"
+            :color="getColor"
+            height="100"
+    >
+        <v-layout column wrap>
+            <v-flex>
+                <v-layout row>
+                    <v-flex>
+                        <span >{{cardData.title}}-{{ cardData.order_id }}</span>
+                        <v-btn flat icon color="white" @click="deleteCard">
+                            <v-icon small>delete</v-icon>
+                        </v-btn>
+                        <v-btn flat icon color="white">
+                            <v-icon small>edit</v-icon>
+                        </v-btn>
+                        <div>{{ cardData.description }}</div>
 
+                    </v-flex>
+                </v-layout>
+                <v-btn flat icon color="white" @click="moveCardLeft">
+                    <v-icon small>keyboard_arrow_left</v-icon>
+                </v-btn>
+                <v-btn flat icon color="white" @click="moveCardLeft">
+                    <v-icon small>keyboard_arrow_up</v-icon>
+                </v-btn>
+
+                <v-btn flat icon color="white" @click="moveCardRight">
+                    <v-icon small>keyboard_arrow_down</v-icon>
+                </v-btn>
+                <v-btn flat icon color="white" @click="moveCardRight">
+                    <v-icon small>keyboard_arrow_right</v-icon>
+                </v-btn>
+            </v-flex>
+
+        </v-layout>
+
+    </v-sheet>-->
+    <v-card :color="getColor" dark >
+        <v-card-text style="padding: 8px; margin: 0">
+            {{cardData.title}}-{{ cardData.order_id }}
+            <v-btn flat icon color="white" @click="deleteCard">
+                <v-icon small>delete</v-icon>
+            </v-btn>
+            <v-btn flat icon color="white">
+                <v-icon small>edit</v-icon>
+            </v-btn>
+            <v-divider></v-divider>
             <div>{{ cardData.description }}</div>
-            <div>{{ cardData.deadline }}</div>
         </v-card-text>
-        <v-divider></v-divider>
-        <v-card-actions class="pa-3">
+        <v-card-actions class="pa-3" style="padding: 0; margin: 0">
             <v-btn flat icon color="white" @click="moveCardLeft">
                 <v-icon small>keyboard_arrow_left</v-icon>
             </v-btn>
@@ -43,7 +76,13 @@
             return {
                 id: this.cardData.id,
                 card: this.cardData,
-                color: 'primary'
+                color: 'primary',
+                items: [
+                    { title: 'Click Me' },
+                    { title: 'Click Me' },
+                    { title: 'Click Me' },
+                    { title: 'Click Me 2' }
+                ]
             }
         },
         methods: {
@@ -60,9 +99,11 @@
                 then(response => {
                     if(response.data.status === true) {
                         this.$emit('moved');
+                    } else {
+                        this.$emit('moved', response.data.error);
                     }
                 }).catch(error => {
-
+                    this.$emit('moved', error.error);
                 });
             },
             moveCardRight() {
@@ -70,9 +111,11 @@
                 then(response => {
                     if(response.data.status === true) {
                         this.$emit('moved');
+                    } else {
+                        this.$emit('moved', response.data.error);
                     }
                 }).catch(error => {
-
+                    this.$emit('moved', error.error);
                 });
             }
         },

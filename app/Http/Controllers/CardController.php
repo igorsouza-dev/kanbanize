@@ -86,10 +86,10 @@ class CardController extends Controller
     }
     public function moveLeft(Card $card)
     {
-        return response(['status'=>$card->moveLeft()]);
+        return response($card->moveLeft());
     }
     public function moveRight(Card $card)
     {
-        return response(['status'=>$card->moveRight()]);
+        return response($card->moveRight());
     }
 }

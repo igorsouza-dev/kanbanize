@@ -15,14 +15,34 @@ class Card extends Model
     {
         $left = $this->column->leftColumn();
         $this->column_id = $left->id;
-        return $this->save();
+        if(count($left->cards)+1 <= $left->max_cards) {
+            $status = $this->save();
+            $error = '';
+            if(!$status) {
+                $error = 'Não foi possível salvar mudança';
+            }
+        } else {
+            $status = false;
+            $error = 'Nº máximo de cards atingido.';
+        }
+        return ['status'=>$status, 'error'=>$error];
     }
 
     public function moveRight()
     {
         $right = $this->column->rightColumn();
         $this->column_id = $right->id;
-        return $this->save();
+        if(count($right->cards)+1 <= $right->max_cards) {
+            $status = $this->save();
+            $error = '';
+            if(!$status) {
+                $error = 'Não foi possível salvar mudança';
+            }
+        } else {
+            $status = false;
+            $error = 'Nº máximo de cards atingido.';
+        }
+        return ['status'=>$status, 'error'=>$error];
     }
 
     public function column()

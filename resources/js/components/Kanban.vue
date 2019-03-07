@@ -4,6 +4,16 @@
                  @newcard="dialog.show=true"
                  @refresh="getColumns"
         ></toolbar>
+        <v-snackbar
+            :timeout="timeout"
+            top
+            v-model="snack"
+        >
+            {{ this.snackText }}
+            <v-btn color="pink" flat @click.native="snack=false">
+                Close
+            </v-btn>
+        </v-snackbar>
         <app-section-loader :status="loader"></app-section-loader>
 
         <board v-if="!loader" :board="this.myBoard" @deleted="deleted" @moved="moved"></board>
@@ -37,7 +47,9 @@
                 description: '',
                 dialog: {show: false},
                 loader: false,
-                progress: 25,
+                timeout: 2000,
+                snack: false,
+                snackText: ''
             }
         },
         methods: {
@@ -63,10 +75,19 @@
                 this.dialog.show =false;
             },
             deleted() {
+                this.showSnack("Card excluído com sucesso");
                 this.getColumns();
             },
-            moved() {
-                this.getColumns();
+            moved(message) {
+                if(message) {
+                    this.showSnack(message);
+                } else {
+                    this.getColumns();
+                }
+            },
+            showSnack(text) {
+                this.snackText = text;
+                this.snack = true;
             }
         },
         mounted() {

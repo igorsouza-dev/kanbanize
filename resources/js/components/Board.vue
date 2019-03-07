@@ -1,15 +1,20 @@
 <template>
     <div>
-        <v-container fluid grid-list-xs>
+        <v-container grid-list-xs fluid>
             <v-layout row wrap>
                 <v-flex d-flex md-2 v-for="column in columns" :key="column.id">
-                    <v-card >
-                        <v-card-title>
-                            <h2>
-                                {{ column.name }}
-                            </h2>
-                        </v-card-title>
+                    <v-card max-width="250" >
                         <v-card-text>
+                            <div>
+                                <v-card color="accent" dark >
+                                    <v-card-text >
+                                        <h4>
+                                            {{ column.name }} ({{ column.cards.length }}/{{column.max_cards}})
+                                        </h4>
+                                    </v-card-text>
+                                </v-card>
+                            </div>
+                            <v-divider></v-divider>
                             <v-layout column>
                                 <v-flex d-flex v-for="item in column.cards" :key="item.key">
                                     <card :card-data="item" @deleted="deleted" @moved="moved"></card>
@@ -44,8 +49,8 @@
             deleted() {
                 this.$emit('deleted');
             },
-            moved() {
-                this.$emit('moved');
+            moved(error) {
+                this.$emit('moved', error);
             }
         }
 
