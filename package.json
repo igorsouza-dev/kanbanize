@@ -18,14 +18,15 @@
         "lodash": "^4.17.5",
         "popper.js": "^1.12",
         "resolve-url-loader": "^2.3.1",
-        "sass": "^1.15.2",
+        "sass": "^1.17.2",
         "sass-loader": "^7.1.0",
-        "vue": "^2.5.17",
-        "vue-template-compiler": "^2.6.7"
+        "vue": "^2.6.8",
+        "vue-template-compiler": "^2.6.8"
     },
     "dependencies": {
         "laravel-elixir-vue-2": "^0.3.0",
         "vue-cli": "^2.9.6",
-        "vuetify": "^1.5.2"
+        "vuedraggable": "^2.19.2",
+        "vuetify": "^1.5.6"
     }
 }
