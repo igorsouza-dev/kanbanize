@@ -55,4 +55,8 @@ class Column extends Model
         }
         return $rightColumn;
     }
+    public function lastPosition()
+    {
+        return count($this->cards);
+    }
 }

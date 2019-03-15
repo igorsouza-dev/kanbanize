@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Card;
+use App\Column;
 use Illuminate\Http\Request;
 
 class CardController extends Controller
@@ -35,8 +36,12 @@ class CardController extends Controller
      */
     public function store(Request $request)
     {
-
-        return Card::create(request()->all());
+        $data = request()->all();
+        $column = Column::find($data['column_id']);
+        if($column) {
+            $data['column_position'] = $column->lastPosition();
+        }
+        return Card::create($data);
     }
 
     /**
@@ -70,7 +75,9 @@ class CardController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $card = Card::find($id);
+        $card->update($request->all());
+        return $card;
     }
 
     /**
@@ -88,8 +95,13 @@ class CardController extends Controller
     {
         return response($card->moveLeft());
     }
+
     public function moveRight(Card $card)
     {
         return response($card->moveRight());
+    }
+    public function moveCard(Card $card, Column $column, $pos)
+    {
+        return response($card->move($column, $pos));
     }
 }

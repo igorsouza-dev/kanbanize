@@ -27,3 +27,4 @@ Route::resource('cards', 'CardController');
 Route::get('/api/boards/{board}/columns', 'BoardController@columns');
 Route::get('/cards/{card}/move-left', 'CardController@moveLeft');
 Route::get('/cards/{card}/move-right', 'CardController@moveRight');
+Route::get('/cards/{card}/move-card/{column}/{pos}', 'CardController@moveCard');

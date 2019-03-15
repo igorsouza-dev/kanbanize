@@ -5,9 +5,11 @@
         <v-toolbar-title class="white--text">{{this.title}}</v-toolbar-title>
 
         <v-spacer></v-spacer>
-
         <v-btn icon @click="$emit('newcard')">
             <v-icon>note_add</v-icon>
+        </v-btn>
+        <v-btn icon @click="$emit('newcard')">
+            <v-icon>queue</v-icon>
         </v-btn>
 
         <v-btn icon @click="$emit('refresh')">

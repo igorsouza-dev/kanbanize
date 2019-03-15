@@ -2,7 +2,7 @@
     <v-dialog v-model="this.dialog.show" max-width="600">
         <v-card>
             <v-card-title>
-                <span class="headline">New Card</span>
+                <span class="headline">Novo Card</span>
             </v-card-title>
             <v-card-text>
                 <app-section-loader :status="showLoader"></app-section-loader>
@@ -14,24 +14,22 @@
                     >
                         <v-layout wrap>
                             <v-flex xs4 sm4 md4>
-                                <label for="column">Coluna*</label>
-                                <select class="form-control" v-model="column" id="column">
+                                <label for="column_id">Coluna*</label>
+                                <select class="form-control" v-model="parentBoard.card.column_id" id="column_id">
                                     <option v-for="item in parentBoard.columns" :rules="[v => !!v || 'A coluna é obrigatória']" :key="item.id" :value="item.id">{{ item.name }}</option>
                                 </select>
                             </v-flex>
+                            <v-flex xs4 sm4 md4></v-flex>
                             <v-flex xs4 sm4 md4>
-                                <v-text-field label="Posição*" :rules="[v => !!v || 'A posição é obrigatória']" required v-model="column_position"></v-text-field>
-                            </v-flex>
-                            <v-flex xs4 sm4 md4>
-                                <v-text-field label="Prazo*" type="date" :rules="[v => !!v || 'O prazo é obrigatório']" required v-model="deadline"></v-text-field>
+                                <v-text-field label="Prazo*" type="date" :rules="[v => !!v || 'O prazo é obrigatório']" required v-model="parentBoard.card.deadline"></v-text-field>
                             </v-flex>
                         </v-layout>
                         <v-layout>
                             <v-flex xs8 sm8 md8>
-                                <v-text-field label="Título*" :rules="[v => !!v || 'O título é obrigatório']" required v-model="title"></v-text-field>
+                                <v-text-field label="Título*" :rules="[v => !!v || 'O título é obrigatório']" required v-model="parentBoard.card.title"></v-text-field>
                             </v-flex>
                             <v-flex xs4 sm4 md4>
-                                <v-text-field label="Cód. Chamado*" type="number" :rules="[v => !!v || 'O código do chamado é obrigatório']" required v-model="order_id"></v-text-field>
+                                <v-text-field label="Cód. Chamado*" type="number" :rules="[v => !!v || 'O código do chamado é obrigatório']" required v-model="parentBoard.card.order_id"></v-text-field>
                             </v-flex>
                         </v-layout>
                         <v-layout wrap>
@@ -39,7 +37,7 @@
                                 <v-textarea
                                     name="description"
                                     label="Descrição*"
-                                    v-model="description"
+                                    v-model="parentBoard.card.description"
                                     required
                                     :rules="[v => !!v || 'A descrição é obrigatória']"
                                     value=""
@@ -49,19 +47,19 @@
                         <v-layout wrap>
                             <v-flex xs4 sm4 md4>
                                 <label for="size">Size</label>
-                                <select class="form-control" v-model="size" id="size">
+                                <select class="form-control" v-model="parentBoard.card.size" id="size">
                                     <option v-for="item in sizes" :key="item" :value="item">{{ item }}</option>
                                 </select>
                             </v-flex>
                             <v-flex xs4 sm4 md4>
                                 <label for="priority">Priority</label>
-                                <select class="form-control" v-model="priority" id="priority">
+                                <select class="form-control" v-model="parentBoard.card.priority" id="priority">
                                     <option v-for="item in priorities" :key="item.key" :value="item.key">{{ item.value }}</option>
                                 </select>
                             </v-flex>
                             <v-flex xs4 sm4 md4>
                                 <label for="type">Type</label>
-                                <select class="form-control" v-model="type" id="type">
+                                <select class="form-control" v-model="parentBoard.card.type" id="type">
                                     <option v-for="item in types" :key="item.key" :value="item.key">{{ item.value }}</option>
                                 </select>
                             </v-flex>
@@ -89,7 +87,7 @@
     import AppSectionLoader from "./AppSectionLoader";
     import axios from 'axios';
     export default {
-        name: "NewCardDialog",
+        name: "CardDialog",
         props: ['dialog', 'parentBoard'],
         components: {
             AppSectionLoader
@@ -98,7 +96,7 @@
             return {
                 valid: false,
                 showLoader: false,
-                column: '',
+                column_id: '',
                 title: '',
                 description: '',
                 column_position: '',
@@ -126,26 +124,48 @@
         methods: {
             validate () {
                 if (this.$refs.form.validate()) {
-                    this.addCard();
+                    if(this.parentBoard.card.id > 0) {
+                        this.saveCard();
+                    } else {
+                        this.addCard();
+                    }
                 }
             },
             addCard() {
-                console.info(this.column);
                 let data = {
-                    column_id: this.column,
-                    description: this.description,
-                    title: this.title,
-                    size: this.size,
-                    column_position: this.column_position,
-                    priority: this.priority,
-                    deadline: this.deadline,
+                    column_id: this.parentBoard.card.column_id,
+                    description: this.parentBoard.card.description,
+                    title: this.parentBoard.card.title,
+                    size: this.parentBoard.card.size,
+                    priority: this.parentBoard.card.priority,
+                    deadline: this.parentBoard.card.deadline,
                     user_id: 1,
-                    type: this.type,
+                    type: this.parentBoard.card.type,
                     color: 'primary',
-                    order_id: this.order_id
+                    order_id: this.parentBoard.card.order_id
                 };
                 axios.post('/cards', data).then(response => {
-                    console.log(response.data);
+                    this.updateParent();
+                    this.close();
+                }).catch(error => {
+                    this.close();
+                    console.error(error);
+                });
+            },
+            saveCard() {
+                let data = {
+                    column_id: this.parentBoard.card.column_id,
+                    description: this.parentBoard.card.description,
+                    title: this.parentBoard.card.title,
+                    size: this.parentBoard.card.size,
+                    priority: this.parentBoard.card.priority,
+                    deadline: this.parentBoard.card.deadline,
+                    user_id: 1,
+                    type: this.parentBoard.card.type,
+                    color: 'primary',
+                    order_id: this.parentBoard.card.order_id
+                };
+                axios.put('/cards/'+this.parentBoard.card.id, data).then(response => {
                     this.updateParent();
                     this.close();
                 }).catch(error => {

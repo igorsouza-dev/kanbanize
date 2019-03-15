@@ -27,7 +27,33 @@ class Card extends Model
         }
         return ['status'=>$status, 'error'=>$error];
     }
+    public function move($column, $pos)
+    {
+        if(count($column->cards) >= $column->max_cards) {
+            $status = false;
+            $error = 'Nº máximo de cards atingido.';
+        } else {
+            $this->column_id = $column->id;
+            $this->column_position = $pos;
+            $status = $this->save();
+            $error = '';
+        }
 
+        $i=0;
+        $cards = Column::find($column->id)->cards;
+        foreach($cards as $card) {
+            if($card->id == $this->id) {
+                continue;
+            }
+            if($i == $pos) {
+                $i++;
+            }
+            $card->column_position = $i;
+            $card->save();
+            $i++;
+        }
+        return ['status'=>$status, 'error'=>$error];
+    }
     public function moveRight()
     {
         $right = $this->column->rightColumn();

@@ -1,7 +1,7 @@
 <template>
     <div>
         <toolbar :title="this.myBoard.name"
-                 @newcard="dialog.show=true"
+                 @newcard="newCard"
                  @refresh="getColumns"
         ></toolbar>
         <v-snackbar
@@ -16,8 +16,8 @@
         </v-snackbar>
         <app-section-loader :status="loader"></app-section-loader>
 
-        <board v-if="!loader" :board="this.myBoard" @deleted="deleted" @moved="moved"></board>
-        <new-card-dialog :parent-board="this.myBoard" :dialog="dialog" @updateParent="getColumns" @close="closeDialog"></new-card-dialog>
+        <board v-if="!loader" :board="myBoard" @deleted="deleted" @moved="moved" @editCard="editCard"></board>
+        <card-dialog :parent-board="myBoard" :dialog="dialog" @updateParent="getColumns" @close="closeDialog"></card-dialog>
     </div>
 </template>
 
@@ -27,13 +27,13 @@
     import Board from './Board';
     import axios from 'axios';
     import Toolbar from "./Toolbar";
-    import NewCardDialog from "./NewCardDialog";
+    import CardDialog from "./CardDialog";
     export default {
         name: "Kanban",
         components:{
             Toolbar,
             Board,
-            NewCardDialog,
+            CardDialog,
             AppSectionLoader
         },
         props: ['board'],
@@ -42,20 +42,21 @@
                 columns: [],
                 loaded: false,
                 title: '',
-                myBoard: this.board,
-                column: null,
+                myBoard: {id: this.board, card: {}},
+                column_id: null,
                 description: '',
                 dialog: {show: false},
                 loader: false,
                 timeout: 2000,
                 snack: false,
-                snackText: ''
+                snackText: '',
             }
         },
         methods: {
             getBoard() {
                 axios.get('/api/boards/'+this.board).then(response => {
                     this.myBoard = response.data;
+                    this.initializeCard();
                     this.loaded = true;
                 }).catch( error => {
                     this.loaded = true;
@@ -73,6 +74,7 @@
             },
             closeDialog() {
                 this.dialog.show =false;
+                this.initializeCard();
             },
             deleted() {
                 this.showSnack("Card excluído com sucesso");
@@ -81,9 +83,30 @@
             moved(message) {
                 if(message) {
                     this.showSnack(message);
-                } else {
-                    this.getColumns();
                 }
+                this.getColumns();
+
+            },
+            editCard(card) {
+                this.myBoard.card = card;
+                this.dialog.show=true;
+            },
+            newCard() {
+                this.initializeCard();
+                this.dialog.show=true;
+            },
+            initializeCard() {
+                this.myBoard.card = {
+                    title: '',
+                    description: '',
+                    column_id: '',
+                    size: '',
+                    priority: '',
+                    deadline: '',
+                    user_id: 0,
+                    type: '',
+                    order_id: ''
+                };
             },
             showSnack(text) {
                 this.snackText = text;
@@ -92,6 +115,7 @@
         },
         mounted() {
             this.getBoard();
+            this.initializeCard();
             this.getColumns();
         }
     }
