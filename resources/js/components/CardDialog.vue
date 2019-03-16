@@ -2,7 +2,7 @@
     <v-dialog v-model="this.dialog.show" max-width="600">
         <v-card>
             <v-card-title>
-                <span class="headline">Novo Card</span>
+                <span class="headline">{{ this.parentBoard.card.id ? 'Editar' : 'Novo' }} Card</span>
             </v-card-title>
             <v-card-text>
                 <app-section-loader :status="showLoader"></app-section-loader>
@@ -96,24 +96,18 @@
             return {
                 valid: false,
                 showLoader: false,
-                column_id: '',
-                title: '',
-                description: '',
-                column_position: '',
-                size: 1,
+
                 sizes: [
                     '1','2','3','5','8','13','21','34'
                 ],
-                deadline: '',
-                order_id: 0,
-                priority: 1,
+
                 priorities: [
                     {key: 1, value: 'Baixa'},
                     {key: 2, value: 'Média'},
                     {key: 3, value: 'Alta'},
                     {key: 4, value: 'Crítica'},
                 ],
-                type: 1,
+
                 types: [
                     {key: 1, value: 'Corretiva'},
                     {key: 2, value: 'Adaptativa'},
@@ -132,19 +126,8 @@
                 }
             },
             addCard() {
-                let data = {
-                    column_id: this.parentBoard.card.column_id,
-                    description: this.parentBoard.card.description,
-                    title: this.parentBoard.card.title,
-                    size: this.parentBoard.card.size,
-                    priority: this.parentBoard.card.priority,
-                    deadline: this.parentBoard.card.deadline,
-                    user_id: 1,
-                    type: this.parentBoard.card.type,
-                    color: 'primary',
-                    order_id: this.parentBoard.card.order_id
-                };
-                axios.post('/cards', data).then(response => {
+
+                axios.post('/cards', this.getData()).then(response => {
                     this.updateParent();
                     this.close();
                 }).catch(error => {
@@ -153,19 +136,7 @@
                 });
             },
             saveCard() {
-                let data = {
-                    column_id: this.parentBoard.card.column_id,
-                    description: this.parentBoard.card.description,
-                    title: this.parentBoard.card.title,
-                    size: this.parentBoard.card.size,
-                    priority: this.parentBoard.card.priority,
-                    deadline: this.parentBoard.card.deadline,
-                    user_id: 1,
-                    type: this.parentBoard.card.type,
-                    color: 'primary',
-                    order_id: this.parentBoard.card.order_id
-                };
-                axios.put('/cards/'+this.parentBoard.card.id, data).then(response => {
+                axios.put('/cards/'+this.parentBoard.card.id, this.getData()).then(response => {
                     this.updateParent();
                     this.close();
                 }).catch(error => {
@@ -175,6 +146,20 @@
             },
             updateParent() {
                 this.$emit('updateParent')
+            },
+            getData() {
+                return {
+                    column_id: this.parentBoard.card.column_id,
+                    description: this.parentBoard.card.description,
+                    title: this.parentBoard.card.title,
+                    size: this.parentBoard.card.size,
+                    priority: this.parentBoard.card.priority,
+                    deadline: this.parentBoard.card.deadline,
+                    user_id: 1,
+                    type: this.parentBoard.card.type,
+                    color: 'primary',
+                    order_id: this.parentBoard.card.order_id
+                };
             },
             close() {
                 this.$emit('close');

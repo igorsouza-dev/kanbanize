@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Board;
+use App\Column;
 use Illuminate\Http\Request;
 
 class ColumnController extends Controller
@@ -33,16 +34,15 @@ class ColumnController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Board $board)
+    public function store(Request $request)
     {
-        $validated = request()->validate([
+        return Column::create($request->validate([
+            'board_id' => ['required'],
             'name' => ['required', 'min:3', 'max:255'],
             'board_position' => ['required', 'integer'],
             'max_cards' => ['required', 'integer'],
             'min_cards' => ['required', 'integer'],
-        ]);
-        $board->addColumn($validated);
-        return redirect('/boards/' . $board->id);
+        ]));
 
     }
 
@@ -77,17 +77,20 @@ class ColumnController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $column = Column::find($id);
+        $column->update($request->all());
+        return $column;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Column $column
+     * @return void
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Column $column)
     {
-        //
+        $column->delete();
     }
 }

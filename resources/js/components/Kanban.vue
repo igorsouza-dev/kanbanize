@@ -2,6 +2,7 @@
     <div>
         <toolbar :title="this.myBoard.name"
                  @newcard="newCard"
+                 @newcolumn="newColumn"
                  @refresh="getColumns"
         ></toolbar>
         <v-snackbar
@@ -18,6 +19,7 @@
 
         <board v-if="!loader" :board="myBoard" @deleted="deleted" @moved="moved" @editCard="editCard"></board>
         <card-dialog :parent-board="myBoard" :dialog="dialog" @updateParent="getColumns" @close="closeDialog"></card-dialog>
+        <column-dialog :parent-board="myBoard" :dialog="dialogColumn" @updateParent="getColumns" @close="closeDialogColumn"></column-dialog>
     </div>
 </template>
 
@@ -28,13 +30,15 @@
     import axios from 'axios';
     import Toolbar from "./Toolbar";
     import CardDialog from "./CardDialog";
+    import ColumnDialog from "./ColumnDialog";
     export default {
         name: "Kanban",
         components:{
             Toolbar,
             Board,
             CardDialog,
-            AppSectionLoader
+            AppSectionLoader,
+            ColumnDialog
         },
         props: ['board'],
         data() {
@@ -42,10 +46,11 @@
                 columns: [],
                 loaded: false,
                 title: '',
-                myBoard: {id: this.board, card: {}},
+                myBoard: {id: this.board, card: {}, column: {}},
                 column_id: null,
                 description: '',
                 dialog: {show: false},
+                dialogColumn: {show: false},
                 loader: false,
                 timeout: 2000,
                 snack: false,
@@ -57,6 +62,7 @@
                 axios.get('/api/boards/'+this.board).then(response => {
                     this.myBoard = response.data;
                     this.initializeCard();
+                    this.initializeColumn();
                     this.loaded = true;
                 }).catch( error => {
                     this.loaded = true;
@@ -75,6 +81,9 @@
             closeDialog() {
                 this.dialog.show =false;
                 this.initializeCard();
+            },
+            closeDialogColumn() {
+                this.dialogColumn.show = false;
             },
             deleted() {
                 this.showSnack("Card excluído com sucesso");
@@ -95,6 +104,10 @@
                 this.initializeCard();
                 this.dialog.show=true;
             },
+            newColumn() {
+                this.initializeColumn();
+                this.dialogColumn.show = true;
+            },
             initializeCard() {
                 this.myBoard.card = {
                     title: '',
@@ -108,6 +121,14 @@
                     order_id: ''
                 };
             },
+            initializeColumn() {
+                this.myBoard.column = {
+                    board_id: this.board,
+                    name: '',
+                    board_position: '',
+                    max_cards: ''
+                };
+            },
             showSnack(text) {
                 this.snackText = text;
                 this.snack = true;
@@ -115,7 +136,6 @@
         },
         mounted() {
             this.getBoard();
-            this.initializeCard();
             this.getColumns();
         }
     }

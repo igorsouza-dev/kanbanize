@@ -18,6 +18,6 @@ class Board extends Model
 
     public function addColumn($attributes)
     {
-        $this->columns()->create($attributes);
+        return $this->columns()->create($attributes);
     }
 }
