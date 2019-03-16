@@ -46,19 +46,19 @@
                         </v-layout>
                         <v-layout wrap>
                             <v-flex xs4 sm4 md4>
-                                <label for="size">Size</label>
+                                <label for="size">Tamanho</label>
                                 <select class="form-control" v-model="parentBoard.card.size" id="size">
                                     <option v-for="item in sizes" :key="item" :value="item">{{ item }}</option>
                                 </select>
                             </v-flex>
                             <v-flex xs4 sm4 md4>
-                                <label for="priority">Priority</label>
+                                <label for="priority">Prioridade</label>
                                 <select class="form-control" v-model="parentBoard.card.priority" id="priority">
                                     <option v-for="item in priorities" :key="item.key" :value="item.key">{{ item.value }}</option>
                                 </select>
                             </v-flex>
                             <v-flex xs4 sm4 md4>
-                                <label for="type">Type</label>
+                                <label for="type">Tipo</label>
                                 <select class="form-control" v-model="parentBoard.card.type" id="type">
                                     <option v-for="item in types" :key="item.key" :value="item.key">{{ item.value }}</option>
                                 </select>
@@ -68,6 +68,7 @@
                 </v-container>
             </v-card-text>
             <v-card-actions>
+                <v-btn v-if="parentBoard.card.id" class="btn-excluir" @click="deleteCard" color="red">Excluir</v-btn>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" flat @click="close">Fechar</v-btn>
                 <v-btn
@@ -142,6 +143,15 @@
                 }).catch(error => {
                     this.close();
                     console.error(error);
+                });
+            },
+            deleteCard() {
+                axios.delete('/cards/'+this.parentBoard.card.id).
+                then(response => {
+                    this.close();
+                    this.$emit('deletedCard');
+                }).catch(error => {
+                    this.close();
                 });
             },
             updateParent() {

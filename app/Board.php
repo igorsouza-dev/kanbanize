@@ -20,4 +20,9 @@ class Board extends Model
     {
         return $this->columns()->create($attributes);
     }
+
+    public function lastBoardPosition()
+    {
+        return count($this->columns);
+    }
 }

@@ -36,14 +36,35 @@ class ColumnController extends Controller
      */
     public function store(Request $request)
     {
-        return Column::create($request->validate([
+        $validated = $request->validate([
             'board_id' => ['required'],
             'name' => ['required', 'min:3', 'max:255'],
-            'board_position' => ['required', 'integer'],
             'max_cards' => ['required', 'integer'],
-            'min_cards' => ['required', 'integer'],
-        ]));
+        ]);
+        $board = Board::find($validated['board_id']);
+        $validated['board_position'] = $board->lastBoardPosition();
+        return Column::create($validated);
 
+    }
+    public function moveColumn(Column $column, $pos)
+    {
+        $column->board_position = $pos;
+        $column->save();
+
+        $i=0;
+        $columns = $column->board->columns;
+
+        foreach($columns as $col) {
+            if($col->id == $column->id) {
+                continue;
+            }
+            if($i == $pos) {
+                $i++;
+            }
+            $col->board_position = $i;
+            $col->save();
+            $i++;
+        }
     }
 
     /**

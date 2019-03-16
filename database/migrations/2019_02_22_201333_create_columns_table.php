@@ -20,7 +20,6 @@ class CreateColumnsTable extends Migration
             $table->unsignedInteger('parent_column_id')->nullable();
             $table->string('name');
             $table->unsignedInteger('max_cards');
-            $table->unsignedInteger('min_cards');
 
             $table->timestamps();
             $table->softDeletes();

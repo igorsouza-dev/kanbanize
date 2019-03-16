@@ -21,7 +21,7 @@ class CreateCardsTable extends Migration
             $table->string('color');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('column_id');
-            $table->dateTime('deadline');
+            $table->date('deadline');
             $table->unsignedInteger('column_position');
             $table->tinyInteger('type');
             $table->tinyInteger('priority');

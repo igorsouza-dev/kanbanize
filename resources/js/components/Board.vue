@@ -1,39 +1,58 @@
 <template>
     <div>
-        <v-container grid-list-xs fluid>
+        <v-container grid-list-xs fluid align-center>
             <v-layout row wrap>
-                <v-flex d-flex md-2 v-for="column in columns" :key="column.id">
-                    <v-card max-width="250" >
-                        <v-card-text>
-                            <div>
-                                <v-card color="accent" dark >
-                                    <v-card-text >
-                                        <h4>
-                                            {{ column.name }} ({{ column.cards.length }}/{{column.max_cards}})
-                                        </h4>
-                                    </v-card-text>
-                                </v-card>
-                            </div>
-                            <v-divider></v-divider>
-                            <v-layout column >
-                                <draggable v-model="column.cards" class="dragArea" group="{'kanban'}"
-                                           @change="onDrag"
-                                           :move="onMove"
-                                           ghostClass="dragGhost"
-                                           draggable=".item"
-                                           :id="column.id"
-                                >
-                                    <v-flex d-flex v-for="item in column.cards" :key="item.id"
+                <draggable v-model="columns"
+                           direction="horizontal"
+                           @change="onDragColumn"
+                           ghostClass="dragGhost"
+                           class="dragArea dragAreaColumns"
+                           group="{'columns'}"
+                           handle=".column-header"
+                           draggable=".column-drag">
+                    <v-flex d-flex lg3 md3 xs12 align-center v-for="column in columns" :key="column.id" class="column-drag">
+                            <v-card max-width="250" >
+                                <v-card-text>
+                                    <div>
+                                        <v-card color="accent" dark class="column-header">
+                                            <v-card-text >
+                                                <v-layout row style="padding: 0;">
+                                                    <v-flex xs11 md11>
+                                                        <h5>
+                                                            {{ column.name }} ({{ column.cards.length }}/{{column.max_cards}})
+                                                        </h5>
+                                                    </v-flex>
+                                                    <v-flex xs1 md1>
+                                                        <v-btn flat icon class="very-small" @click="editColumn(column)">
+                                                            <v-icon small>edit</v-icon>
+                                                        </v-btn>
+                                                    </v-flex>
+                                                </v-layout>
 
-                                            class="item">
-                                        <card :card-data="item" @deleted="deleted" @moved="moved" @editCard="editCard"></card>
-                                    </v-flex>
-                                </draggable>
-                            </v-layout>
-                        </v-card-text>
-                    </v-card>
-                </v-flex>
-            </v-layout>
+                                            </v-card-text>
+                                        </v-card>
+                                    </div>
+                                    <v-divider></v-divider>
+                                    <v-layout column >
+                                        <draggable v-model="column.cards" class="dragArea dragAreaCards" group="{'kanban'}"
+                                                   @change="onDrag"
+                                                   :move="onMove"
+                                                   ghostClass="dragGhost"
+                                                   draggable=".item"
+                                                   :id="column.id"
+                                        >
+                                            <v-flex d-flex v-for="item in column.cards" :key="item.id"
+
+                                                    class="item">
+                                                <card :card-data="item" @deleted="deleted" @moved="moved" @editCard="editCard"></card>
+                                            </v-flex>
+                                        </draggable>
+                                    </v-layout>
+                                </v-card-text>
+                            </v-card>
+                        </v-flex>
+                    </draggable>
+                </v-layout>
         </v-container>
     </div>
 </template>
@@ -67,6 +86,36 @@
             },
             editCard(card) {
                 this.$emit('editCard', card);
+            },
+            editColumn(column) {
+                this.$emit('editColumn', column);
+            },
+            deleteColumn(column) {
+                axios.delete('/columns/'+column.id).
+                then(response => {
+                    this.$emit('deletedColumn');
+                }).catch(error => {
+
+                });
+            },
+            onDragColumn(evt) {
+                if(evt.moved) {
+                    let id = evt.moved.element.id;
+                    let pos = evt.moved.newIndex;
+                    this.moveColumn(id, pos);
+                }
+            },
+            moveColumn(id, pos) {
+                axios.get('/columns/'+id+'/move-column/'+pos).
+                then(response => {
+                    if(response.data.status === true) {
+                        this.$emit('moved');
+                    } else {
+                        this.$emit('moved', response.data.error);
+                    }
+                }).catch(error => {
+                    this.$emit('moved', error.error);
+                });
             },
             onDrag(evt){
                 if(evt.added) {
@@ -102,12 +151,26 @@
 </script>
 
 <style scoped>
-    .dragArea{
-        min-height: 800px;
-        max-height: 800px;
+
+    .dragAreaColumns{
+        width: 100%;
+        display: flex;
+    }
+    .dragAreaCards{
+        min-height: 500px;
+        max-height: 500px;
         overflow-y: auto;
+    }
+    .column-header{
+        cursor: cell;
     }
     .dragGhost{
         border: solid grey 2px;
+        opacity: 0.5;
     }
+    .very-small {
+        height: 16px !important;
+        width: 16px !important;
+    }
+
 </style>

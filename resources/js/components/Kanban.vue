@@ -17,9 +17,9 @@
         </v-snackbar>
         <app-section-loader :status="loader"></app-section-loader>
 
-        <board v-if="!loader" :board="myBoard" @deleted="deleted" @moved="moved" @editCard="editCard"></board>
-        <card-dialog :parent-board="myBoard" :dialog="dialog" @updateParent="getColumns" @close="closeDialog"></card-dialog>
-        <column-dialog :parent-board="myBoard" :dialog="dialogColumn" @updateParent="getColumns" @close="closeDialogColumn"></column-dialog>
+        <board v-if="!loader" :board="myBoard" @deleted="deleted" @moved="moved" @editCard="editCard" @editColumn="editColumn"></board>
+        <card-dialog :parent-board="myBoard" :dialog="dialog" @updateParent="getColumns" @deletedCard="deletedCard" @close="closeDialog"></card-dialog>
+        <column-dialog :parent-board="myBoard" :dialog="dialogColumn" @updateParent="getColumns" @deletedColumn="deletedColumn" @close="closeDialogColumn"></column-dialog>
     </div>
 </template>
 
@@ -85,8 +85,12 @@
             closeDialogColumn() {
                 this.dialogColumn.show = false;
             },
-            deleted() {
+            deletedCard() {
                 this.showSnack("Card excluído com sucesso");
+                this.getColumns();
+            },
+            deletedColumn() {
+                this.showSnack("Coluna excluída com sucesso");
                 this.getColumns();
             },
             moved(message) {
@@ -107,6 +111,10 @@
             newColumn() {
                 this.initializeColumn();
                 this.dialogColumn.show = true;
+            },
+            editColumn(column) {
+                this.myBoard.column = column;
+                this.dialogColumn.show=true;
             },
             initializeCard() {
                 this.myBoard.card = {

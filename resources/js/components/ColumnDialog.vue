@@ -13,13 +13,10 @@
                         lazy-validation
                     >
                         <v-layout>
-                            <v-flex xs4 sm4 md4>
+                            <v-flex xs8 sm8 md8>
                                 <v-text-field label="Nome*" :rules="[v => !!v || 'O nome é obrigatório']" required v-model="parentBoard.column.name"></v-text-field>
                             </v-flex>
                             <v-flex xs4 sm4 md4>
-                                <v-text-field label="Posição*" type="number" :rules="[v => !!v || 'A posição é obrigatória']" required v-model="parentBoard.column.board_position"></v-text-field>
-                            </v-flex>
-                            <v-flex>
                                 <v-text-field label="Nº Máx. Cards.*" type="number" :rules="[v => !!v || 'O nº máximo de cards é obrigatório']" required v-model="parentBoard.column.max_cards"></v-text-field>
                             </v-flex>
                         </v-layout>
@@ -27,6 +24,7 @@
                 </v-container>
             </v-card-text>
             <v-card-actions>
+                <v-btn v-if="parentBoard.column.id" class="btn-excluir" @click="deleteColumn" color="red">Excluir</v-btn>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" flat @click="close">Fechar</v-btn>
                 <v-btn
@@ -80,7 +78,7 @@
             },
             saveColumn() {
 
-                axios.put('/columns/'+this.parentBoard.card.id, this.getData()).then(response => {
+                axios.put('/columns/'+this.parentBoard.column.id, this.getData()).then(response => {
                     this.updateParent();
                     this.close();
                 }).catch(error => {
@@ -88,13 +86,20 @@
                     console.error(error);
                 });
             },
+            deleteColumn() {
+                axios.delete('/columns/'+this.parentBoard.column.id).
+                then(response => {
+                    this.close();
+                    this.$emit('deletedColumn');
+                }).catch(error => {
+                    this.close();
+                });
+            },
             getData() {
                 return {
                     board_id: this.parentBoard.column.board_id,
                     name: this.parentBoard.column.name,
-                    board_position: this.parentBoard.column.board_position,
                     max_cards: this.parentBoard.column.max_cards,
-                    min_cards: 1
                 };
             },
             close() {
@@ -108,5 +113,7 @@
 </script>
 
 <style scoped>
-
+    .btn-excluir{
+        color: white;
+    }
 </style>
