@@ -40,8 +40,7 @@ class ColumnController extends Controller
             'board_id' => ['required'],
             'name' => ['required', 'min:3', 'max:255'],
             'board_position' => ['required', 'integer'],
-            'max_cards' => ['required', 'integer'],
-            'min_cards' => ['required', 'integer'],
+            'max_cards' => ['required', 'integer']
         ]));
 
     }

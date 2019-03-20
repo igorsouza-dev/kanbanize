@@ -81,7 +81,7 @@
                 }
             },
             moveCard(id, column, pos) {
-                axios.get('/cards/'+id+'/move-card/'+column+'/'+pos).
+                axios.get('/api/cards/'+id+'/move-card/'+column+'/'+pos).
                 then(response => {
                     if(response.data.status === true) {
                         this.$emit('moved');

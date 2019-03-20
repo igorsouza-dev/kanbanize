@@ -36,7 +36,7 @@
         },
         methods: {
             deleteCard() {
-                axios.delete('/cards/'+this.id).
+                axios.delete('/api/cards/delete/id/'+this.id).
                 then(response => {
                     this.$emit('deleted');
                 }).catch(error => {
@@ -46,30 +46,6 @@
             editCard() {
                 this.$emit('editCard', this.cardData);
             },
-            moveCardLeft() {
-                axios.get('/cards/'+this.id+'/move-left').
-                then(response => {
-                    if(response.data.status === true) {
-                        this.$emit('moved');
-                    } else {
-                        this.$emit('moved', response.data.error);
-                    }
-                }).catch(error => {
-                    this.$emit('moved', error.error);
-                });
-            },
-            moveCardRight() {
-                axios.get('/cards/'+this.id+'/move-right').
-                then(response => {
-                    if(response.data.status === true) {
-                        this.$emit('moved');
-                    } else {
-                        this.$emit('moved', response.data.error);
-                    }
-                }).catch(error => {
-                    this.$emit('moved', error.error);
-                });
-            }
         },
         computed: {
             getColor: function() {

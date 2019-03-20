@@ -59,7 +59,7 @@
         },
         methods: {
             getBoard() {
-                axios.get('/api/boards/'+this.board).then(response => {
+                axios.get('/api/boards/get?id='+this.board).then(response => {
                     this.myBoard = response.data;
                     this.initializeCard();
                     this.initializeColumn();
@@ -70,7 +70,7 @@
             },
             getColumns() {
                 this.loader = true;
-                axios.get('/api/boards/'+this.board+'/columns').then(response => {
+                axios.get('/api/boards/columns?id='+this.board).then(response => {
                     this.myBoard.columns = response.data;
                     this.loader=false;
                 }).catch(error => {

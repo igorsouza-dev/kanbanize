@@ -70,7 +70,7 @@
             },
             addColumn() {
 
-                axios.post('/columns', this.getData()).then(response => {
+                axios.post('/api/columns/add', this.getData()).then(response => {
                     this.updateParent();
                     this.close();
                 }).catch(error => {
@@ -80,7 +80,7 @@
             },
             saveColumn() {
 
-                axios.put('/columns/'+this.parentBoard.card.id, this.getData()).then(response => {
+                axios.put('/api/columns/edit/id/'+this.parentBoard.card.id, this.getData()).then(response => {
                     this.updateParent();
                     this.close();
                 }).catch(error => {
@@ -93,8 +93,7 @@
                     board_id: this.parentBoard.column.board_id,
                     name: this.parentBoard.column.name,
                     board_position: this.parentBoard.column.board_position,
-                    max_cards: this.parentBoard.column.max_cards,
-                    min_cards: 1
+                    max_cards: this.parentBoard.column.max_cards
                 };
             },
             close() {

@@ -98,14 +98,16 @@ class BoardController extends Controller
 
     public function columns(Board $board)
     {
+        $board = Board::find(request('id'));
         $columns = $board->columns;
         foreach($columns as $column) {
             $column->cards;
         }
         return $board->columns;
     }
-    public function getBoard(Board $board)
+    public function getBoard()
     {
+        $board = Board::find(request('id'));
         $columns = $board->columns;
         foreach($columns as $column) {
             $column->cards;
