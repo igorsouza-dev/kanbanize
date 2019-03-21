@@ -91,17 +91,11 @@ class CardController extends Controller
     {
         $card->delete();
     }
-    public function moveLeft(Card $card)
-    {
-        return response($card->moveLeft());
-    }
 
-    public function moveRight(Card $card)
+    public function moveCard(Card $card)
     {
-        return response($card->moveRight());
-    }
-    public function moveCard(Card $card, Column $column, $pos)
-    {
+        $column = Column::find(request('columnId'));
+        $pos = request('pos');
         return response($card->move($column, $pos));
     }
 }

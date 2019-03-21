@@ -128,7 +128,7 @@
             },
             addCard() {
 
-                axios.post('/cards', this.getData()).then(response => {
+                axios.post('/api/cards/add', this.getData()).then(response => {
                     this.updateParent();
                     this.close();
                 }).catch(error => {
@@ -137,7 +137,7 @@
                 });
             },
             saveCard() {
-                axios.put('/cards/'+this.parentBoard.card.id, this.getData()).then(response => {
+                axios.put('/api/cards/edit/id/'+this.parentBoard.card.id, this.getData()).then(response => {
                     this.updateParent();
                     this.close();
                 }).catch(error => {

@@ -44,10 +44,10 @@ class ColumnController extends Controller
         $board = Board::find($validated['board_id']);
         $validated['board_position'] = $board->lastBoardPosition();
         return Column::create($validated);
-
     }
-    public function moveColumn(Column $column, $pos)
+    public function moveColumn(Column $column)
     {
+        $pos = request('pos');
         $column->board_position = $pos;
         $column->save();
 

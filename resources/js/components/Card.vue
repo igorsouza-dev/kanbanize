@@ -31,11 +31,17 @@
             }
         },
         methods: {
-
+            deleteCard() {
+                axios.delete('/api/cards/delete/id/'+this.id).
+                then(response => {
+                    this.$emit('deleted');
+                }).catch(error => {
+                    console.error(error.message);
+                });
+            },
             editCard() {
                 this.$emit('editCard', this.cardData);
             },
-
         },
         computed: {
             getColor: function() {

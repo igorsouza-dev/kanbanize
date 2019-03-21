@@ -59,14 +59,12 @@
 
 <script>
     import card from './Card';
-    import AppSectionLoader from "./AppSectionLoader";
     import draggable from 'vuedraggable';
     import axios from 'axios';
     export default {
         name: "Board",
         props:[ 'board' ],
         components: {
-            AppSectionLoader,
             card,
             draggable,
         },
@@ -106,7 +104,7 @@
                 }
             },
             moveColumn(id, pos) {
-                axios.get('/columns/'+id+'/move-column/'+pos).
+                axios.get('/api/columns/move/id/'+id+'?pos='+pos).
                 then(response => {
                     if(response.data.status === true) {
                         this.$emit('moved');
@@ -130,7 +128,7 @@
                 }
             },
             moveCard(id, column, pos) {
-                axios.get('/cards/'+id+'/move-card/'+column+'/'+pos).
+                axios.get('/api/cards/move/id/'+id+'?columnId='+column+'&pos='+pos).
                 then(response => {
                     if(response.data.status === true) {
                         this.$emit('moved');

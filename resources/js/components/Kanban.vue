@@ -1,5 +1,6 @@
 <template>
     <div>
+
         <toolbar :title="this.myBoard.name"
                  @newcard="newCard"
                  @newcolumn="newColumn"
@@ -15,17 +16,18 @@
                 Close
             </v-btn>
         </v-snackbar>
-        <app-section-loader :status="loader"></app-section-loader>
+        <v-progress-linear :indeterminate="true" v-show="loader" color="blue" background></v-progress-linear>
 
-        <board v-if="!loader" :board="myBoard" @deleted="deleted" @moved="moved" @editCard="editCard" @editColumn="editColumn"></board>
+        <v-fade-transition>
+            <board  v-if="!loader" :board="myBoard" @moved="moved" @editCard="editCard" @editColumn="editColumn"></board>
+        </v-fade-transition>
+
         <card-dialog :parent-board="myBoard" :dialog="dialog" @updateParent="getColumns" @deletedCard="deletedCard" @close="closeDialog"></card-dialog>
         <column-dialog :parent-board="myBoard" :dialog="dialogColumn" @updateParent="getColumns" @deletedColumn="deletedColumn" @close="closeDialogColumn"></column-dialog>
     </div>
 </template>
 
 <script>
-    import AppSectionLoader from "./AppSectionLoader";
-
     import Board from './Board';
     import axios from 'axios';
     import Toolbar from "./Toolbar";
@@ -37,7 +39,6 @@
             Toolbar,
             Board,
             CardDialog,
-            AppSectionLoader,
             ColumnDialog
         },
         props: ['board'],
@@ -59,7 +60,7 @@
         },
         methods: {
             getBoard() {
-                axios.get('/api/boards/'+this.board).then(response => {
+                axios.get('/api/boards/get?id='+this.board).then(response => {
                     this.myBoard = response.data;
                     this.initializeCard();
                     this.initializeColumn();
@@ -70,7 +71,7 @@
             },
             getColumns() {
                 this.loader = true;
-                axios.get('/api/boards/'+this.board+'/columns').then(response => {
+                axios.get('/api/boards/columns?id='+this.board).then(response => {
                     this.myBoard.columns = response.data;
                     this.loader=false;
                 }).catch(error => {

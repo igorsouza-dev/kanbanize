@@ -68,7 +68,7 @@
             },
             addColumn() {
 
-                axios.post('/columns', this.getData()).then(response => {
+                axios.post('/api/columns/add', this.getData()).then(response => {
                     this.updateParent();
                     this.close();
                 }).catch(error => {
@@ -77,8 +77,7 @@
                 });
             },
             saveColumn() {
-
-                axios.put('/columns/'+this.parentBoard.column.id, this.getData()).then(response => {
+                axios.put('/api/columns/edit/id/'+this.parentBoard.column.id, this.getData()).then(response => {
                     this.updateParent();
                     this.close();
                 }).catch(error => {
@@ -87,7 +86,7 @@
                 });
             },
             deleteColumn() {
-                axios.delete('/columns/'+this.parentBoard.column.id).
+                axios.delete('/api/columns/delete/id/'+this.parentBoard.column.id).
                 then(response => {
                     this.close();
                     this.$emit('deletedColumn');
@@ -99,7 +98,7 @@
                 return {
                     board_id: this.parentBoard.column.board_id,
                     name: this.parentBoard.column.name,
-                    max_cards: this.parentBoard.column.max_cards,
+                    max_cards: this.parentBoard.column.max_cards
                 };
             },
             close() {

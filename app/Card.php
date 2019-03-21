@@ -29,11 +29,17 @@ class Card extends Model
     }
     public function move($column, $pos)
     {
-        if(count($column->cards) >= $column->max_cards) {
-            $status = false;
-            $error = 'Nº máximo de cards atingido.';
+        if($column->id != $this->column_id) {
+            if(count($column->cards) >= $column->max_cards) {
+                $status = false;
+                $error = 'Nº máximo de cards atingido.';
+            } else {
+                $this->column_id = $column->id;
+                $this->column_position = $pos;
+                $status = $this->save();
+                $error = '';
+            }
         } else {
-            $this->column_id = $column->id;
             $this->column_position = $pos;
             $status = $this->save();
             $error = '';
