@@ -19,9 +19,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 //
-//Route::resource('boards', 'BoardController');
-//Route::resource('columns', 'ColumnController');
-//Route::post('boards/{board}/columns', 'ColumnController@store');
+Route::resource('boards', 'BoardController');
+Route::resource('columns', 'ColumnController');
+Route::post('boards/{board}/columns', 'ColumnController@store');
 Route::get('boards/{board}/kanban', 'KanbanController@show');
 //Route::resource('cards', 'CardController');
 //Route::get('/api/boards/{board}/columns', 'BoardController@columns');

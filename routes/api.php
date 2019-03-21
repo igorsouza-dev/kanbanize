@@ -28,3 +28,4 @@ Route::delete('/columns/delete/id/{column}', 'ColumnController@destroy');
 Route::post('/cards/add', 'CardController@store');
 Route::put('/cards/edit/id/{card}', 'CardController@update');
 Route::delete('/cards/delete/id/{card}', 'CardController@destroy');
+Route::get('/cards/move/id/{card}', 'CardController@moveCard');

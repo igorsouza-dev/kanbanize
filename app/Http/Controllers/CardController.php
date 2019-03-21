@@ -100,8 +100,10 @@ class CardController extends Controller
     {
         return response($card->moveRight());
     }
-    public function moveCard(Card $card, Column $column, $pos)
+    public function moveCard(Card $card)
     {
+        $column = Column::find(request('columnId'));
+        $pos = request('pos');
         return response($card->move($column, $pos));
     }
 }
