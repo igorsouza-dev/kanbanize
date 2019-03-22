@@ -79,6 +79,13 @@
                     this.loader=false;
                 });
             },
+            getUsers() {
+                axios.get('/api/users/get').then(response => {
+                    this.myBoard.users = response.data;
+                }).catch(error => {
+                    console.error(error.message);
+                });
+            },
             closeDialog() {
                 this.dialog.show =false;
                 this.initializeCard();
@@ -145,6 +152,7 @@
         },
         mounted() {
             this.getBoard();
+            this.getUsers();
             this.getColumns();
         }
     }

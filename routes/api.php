@@ -32,3 +32,5 @@ Route::post('/cards/add', 'CardController@store');
 Route::put('/cards/edit/id/{card}', 'CardController@update');
 Route::delete('/cards/delete/id/{card}', 'CardController@destroy');
 Route::get('/cards/move/id/{card}', 'CardController@moveCard');
+
+Route::get('/users/get', 'UserController@getUsers');

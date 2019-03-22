@@ -19,7 +19,12 @@
                                     <option v-for="item in parentBoard.columns" :rules="[v => !!v || 'A coluna é obrigatória']" :key="item.id" :value="item.id">{{ item.name }}</option>
                                 </select>
                             </v-flex>
-                            <v-flex xs4 sm4 md4></v-flex>
+                            <v-flex xs4 sm4 md4>
+                                <label for="column_id">Usuário</label>
+                                <select class="form-control" v-model="parentBoard.card.user_id" id="user_id">
+                                    <option v-for="item in parentBoard.users" :key="item.codusuario" :value="item.codusuario">{{ item.nome }}</option>
+                                </select>
+                            </v-flex>
                             <v-flex xs4 sm4 md4>
                                 <v-text-field label="Prazo*" type="date" :rules="[v => !!v || 'O prazo é obrigatório']" required v-model="parentBoard.card.deadline"></v-text-field>
                             </v-flex>
@@ -165,7 +170,7 @@
                     size: this.parentBoard.card.size,
                     priority: this.parentBoard.card.priority,
                     deadline: this.parentBoard.card.deadline,
-                    user_id: 1,
+                    user_id: this.parentBoard.card.user_id,
                     type: this.parentBoard.card.type,
                     color: 'primary',
                     order_id: this.parentBoard.card.order_id
@@ -179,5 +184,7 @@
 </script>
 
 <style scoped>
-
+    .btn-excluir{
+        color: white;
+    }
 </style>
