@@ -56,7 +56,8 @@ class UserController extends Controller
         foreach($result as $user) {
             $users[] = [
                 'codusuario' => $user->id,
-                'nome' => $user->name
+                'nome' => $user->name,
+                'cor' => $user->color
             ];
         }
         return $users;

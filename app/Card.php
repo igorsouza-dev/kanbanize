@@ -81,6 +81,9 @@ class Card extends Model
     {
         return $this->belongsTo(Column::class);
     }
-
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
 }

@@ -102,6 +102,14 @@ class BoardController extends Controller
         $columns = $board->columns;
         foreach($columns as $column) {
             $column->cards;
+            foreach($column->cards as $card) {
+                $usuario = $card->user;
+                $card->usuario = [
+                    'codusuario'=>$usuario->user_id,
+                    'nome'=>$usuario->name,
+                    'cor'=>$usuario->color
+                ];
+            }
         }
         return $board->columns;
     }
