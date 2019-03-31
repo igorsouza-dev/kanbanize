@@ -1,8 +1,8 @@
 <template>
     <v-card :color="getColor" dark class="clickable" style="margin-top: 4px">
         <v-layout row >
-            <v-sheet :color="cardData.usuario.cor" class="d-flex" width="100%" style="padding-left: 4px">
-                {{ cardData.usuario.nome }}
+            <v-sheet :color="usuario.cor" class="d-flex" width="100%" style="padding-left: 4px">
+                {{ usuario.nome }}
             </v-sheet>
         </v-layout>
         <v-card-text style="padding: 8px;">
@@ -43,6 +43,7 @@
                 order_id: this.cardData.order_id,
                 size: this.cardData.size,
                 color: 'primary',
+                usuario: {},
                 priorityColor: '',
                 priorityDescription: '',
             }
@@ -63,6 +64,7 @@
                 window.open('/manager/chamados/abrir/id/'+this.cardData.order_id);
             }
         },
+
         computed: {
             getColor: function() {
                 let colors = [];
@@ -90,6 +92,16 @@
                 colors[4] = '#cc0019';
                 this.priorityColor = colors[this.cardData.priority];
                 return this.priorityColor;
+            }
+        },
+        mounted() {
+            if(this.cardData.usuario === undefined) {
+                this.usuario = {
+                    nome: '',
+                    cor: 'grey'
+                }
+            } else {
+                this.usuario = this.cardData.usuario;
             }
         }
     }
