@@ -76,9 +76,6 @@
             }
         },
         methods: {
-            deleted() {
-                this.$emit('deleted');
-            },
             moved(error) {
                 this.$emit('moved', error);
             },

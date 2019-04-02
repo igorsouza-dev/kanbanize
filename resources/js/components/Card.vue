@@ -20,11 +20,11 @@
                 </v-layout>
                 <v-layout row>
                     <v-flex xs11>
-                        <v-chip text-color="white" class="chips">{{ this.cardData.size }}</v-chip>
+                        <v-chip text-color="white" @click="editCard" class="chips edit">{{ this.cardData.size }}</v-chip>
 
                     </v-flex>
                     <v-flex xs1>
-                        <v-sheet class="very-small" :color="getColorPriority" :title="getPriorityDescription" style="border: solid white 1px; padding: 0; margin: 0"></v-sheet>
+                        <v-sheet class="very-small edit" @click="editCard" :color="getColorPriority" :title="getPriorityDescription" style="border: solid white 1px; padding: 0; margin: 0"></v-sheet>
                     </v-flex>
                 </v-layout>
         </v-card-text>
@@ -111,19 +111,25 @@
     .clickable{
         cursor: grab;
     }
+    .edit {
+        cursor: pointer;
+    }
+    .edit:hover {
+        border: solid red 1px;
+    }
     a {
-        color: white;
+        color: black;
         text-decoration: underline white;
     }
     a:hover {
         text-decoration: underline black;
     }
     a:active {
-        color: white;
+        color: black;
         text-decoration: underline black;
     }
     a:visited {
-        color: white
+        color: black
     }
     .chips {
         font-size: 10px;

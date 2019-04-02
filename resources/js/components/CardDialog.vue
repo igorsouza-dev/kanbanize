@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="this.dialog.show" max-width="600">
+    <v-dialog v-model="this.dialog.show" persistent max-width="600">
         <v-card>
             <v-card-title>
                 <span class="headline">{{ this.parentBoard.card.id ? 'Editar' : 'Novo' }} Card</span>
@@ -151,7 +151,7 @@
                 });
             },
             deleteCard() {
-                axios.delete('/cards/'+this.parentBoard.card.id).
+                axios.delete('/api/cards/delete/id/'+this.parentBoard.card.id).
                 then(response => {
                     this.close();
                     this.$emit('deletedCard');
