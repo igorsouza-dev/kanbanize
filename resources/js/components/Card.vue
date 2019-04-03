@@ -19,9 +19,11 @@
                     </v-flex>
                 </v-layout>
                 <v-layout row>
-                    <v-flex xs11>
+                    <v-flex xs4>
                         <v-chip text-color="white" @click="editCard" class="chips edit">{{ this.cardData.size }}</v-chip>
-
+                    </v-flex>
+                    <v-flex xs7 >
+                        {{ this.cardData.tag }}
                     </v-flex>
                     <v-flex xs1>
                         <v-sheet class="very-small edit" @click="editCard" :color="getColorPriority" :title="getPriorityDescription" style="border: solid white 1px; padding: 0; margin: 0"></v-sheet>

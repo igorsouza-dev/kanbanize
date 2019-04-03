@@ -50,23 +50,26 @@
                             </v-flex>
                         </v-layout>
                         <v-layout wrap>
-                            <v-flex xs4 sm4 md4>
+                            <v-flex xs3 sm3 md3>
                                 <label for="size">Tamanho</label>
                                 <select class="form-control" v-model="parentBoard.card.size" id="size">
                                     <option v-for="item in sizes" :key="item" :value="item">{{ item }}</option>
                                 </select>
                             </v-flex>
-                            <v-flex xs4 sm4 md4>
+                            <v-flex xs3 sm3 md3>
                                 <label for="priority">Prioridade</label>
                                 <select class="form-control" v-model="parentBoard.card.priority" id="priority">
                                     <option v-for="item in priorities" :key="item.key" :value="item.key">{{ item.value }}</option>
                                 </select>
                             </v-flex>
-                            <v-flex xs4 sm4 md4>
+                            <v-flex xs3 sm3 md3>
                                 <label for="type">Tipo</label>
                                 <select class="form-control" v-model="parentBoard.card.type" id="type">
                                     <option v-for="item in types" :key="item.key" :value="item.key">{{ item.value }}</option>
                                 </select>
+                            </v-flex>
+                            <v-flex xs3 sm3 md3>
+                                <v-text-field label="Tag" type="text" v-model="parentBoard.card.tag"></v-text-field>
                             </v-flex>
                         </v-layout>
                     </v-form>
@@ -173,7 +176,8 @@
                     user_id: this.parentBoard.card.user_id,
                     type: this.parentBoard.card.type,
                     color: 'primary',
-                    order_id: this.parentBoard.card.order_id
+                    order_id: this.parentBoard.card.order_id,
+                    tag: this.parentBoard.card.tag
                 };
             },
             close() {

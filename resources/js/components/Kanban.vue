@@ -134,7 +134,8 @@
                     deadline: '',
                     user_id: 0,
                     type: '',
-                    order_id: ''
+                    order_id: '',
+                    tag: ''
                 };
             },
             initializeColumn() {

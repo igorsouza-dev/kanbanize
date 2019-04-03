@@ -44,7 +44,7 @@
                                             <v-flex d-flex v-for="item in column.cards" :key="item.id"
 
                                                     class="item">
-                                                <card :card-data="item" @deleted="deleted" @moved="moved" @editCard="editCard"></card>
+                                                <card :card-data="item"  @moved="moved" @editCard="editCard"></card>
                                             </v-flex>
                                         </draggable>
                                     </v-layout>
