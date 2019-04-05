@@ -24,6 +24,7 @@
         "vue-template-compiler": "^2.6.8"
     },
     "dependencies": {
+        "firebase": "^5.9.3",
         "laravel-elixir-vue-2": "^0.3.0",
         "vue-cli": "^2.9.6",
         "vuedraggable": "^2.19.2",

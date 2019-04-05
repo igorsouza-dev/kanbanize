@@ -9,7 +9,7 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-import Vuetify from 'vuetify'
+import Vuetify from 'vuetify';
 
 Vue.use(Vuetify);
 /**
@@ -20,8 +20,8 @@ Vue.use(Vuetify);
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-const files = require.context('./', true, /\.vue$/i)
-files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+const files = require.context('./', true, /\.vue$/i);
+files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 // Vue.component('modal', require('./components/modal.vue').default);
@@ -32,6 +32,18 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+import firebase from 'firebase';
+
+var config = {
+    apiKey: "AIzaSyBssSW5A5wd4ASz00-dTYXlp_hUwK2Xh7I",
+    authDomain: "life-kanban.firebaseapp.com",
+    databaseURL: "https://life-kanban.firebaseio.com",
+    projectId: "life-kanban",
+    storageBucket: "",
+    messagingSenderId: "614730685038"
+};
+let fb = firebase.initializeApp(config);
+Vue.prototype.$firebase = fb.database();
 
 const app = new Vue({
     el: '#app',

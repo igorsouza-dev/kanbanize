@@ -152,10 +152,11 @@
         display: flex;
     }
     .dragAreaCards{
-        min-height: 500px;
-        max-height: 500px;
+        min-height: 75vh;
+        max-height: 75vh;
         overflow-y: auto;
     }
+
     .column-header{
         cursor: cell;
     }
