@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Board;
 use Illuminate\Http\Request;
+use Kreait\Firebase\ServiceAccount;
 
 class BoardController extends Controller
 {
@@ -38,6 +39,9 @@ class BoardController extends Controller
     {
         $validated = request()->validate([
             'name' => ['required', 'min:3', 'max:255'],
+        ]);
+        $serviceAccount = ServiceAccount::fromArray([
+
         ]);
         Board::create($validated);
         return redirect('/boards');
