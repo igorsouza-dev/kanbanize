@@ -66,22 +66,27 @@
                     this.myBoard = response.data;
                     this.initializeCard();
                     this.initializeColumn();
-                    this.startFirebase();
                     this.loaded = true;
                 }).catch( error => {
                     this.loaded = true;
+                }).then(() => {
+                    this.startFirebase();
+                }).then(() => {
+                    this.getColumns();
                 });
             },
             getColumns() {
                 this.loader = true;
                 axios.get('/api/boards/columns?id='+this.board).then(response => {
                     this.myBoard.columns = response.data;
-                    this.loader=false;
                 }).catch(error => {
                     console.error(error);
                     this.loader=false;
+                }).then(() => {
+                    this.updateFirebase();
+                    this.loader=false;
+                    this.hasUpdates = false;
                 });
-                this.hasUpdates = false;
             },
             getUsers() {
                 axios.get('/api/users/get').then(response => {
@@ -106,26 +111,28 @@
                 }
             },
             updatedCard() {
-                this.updateFirebase();
+                this.hasUpdates = true;
+                this.refresh();
             },
             updatedColumn() {
-                this.updateFirebase();
+                this.hasUpdates = true;
+                this.refresh();
             },
             deletedCard() {
                 this.showSnack("Card excluído com sucesso");
-                this.updateFirebase();
+                this.hasUpdates = true;
+                this.refresh();
             },
             deletedColumn() {
                 this.showSnack("Coluna excluída com sucesso");
-                this.updateFirebase();
+                this.hasUpdates = true;
+                this.refresh();
             },
             moved(message) {
                 if(message) {
                     this.showSnack(message);
-                    this.refresh();
-                } else {
-                    this.updateFirebase();
                 }
+                this.refresh();
             },
             editCard(card) {
                 this.myBoard.card = card;
@@ -179,32 +186,30 @@
                 this.snack = true;
             },
             startFirebase() {
-                let _this = this;
-                this.getColumns();
-                this.$firebase.ref('board/'+this.board).set({
-                    columns: this.myBoard.columns
-                }, function(error) {
-                    _this.$firebase.ref('board/'+_this.board).on('value', (snapshot) => {
-                        _this.hasUpdates = true;
-                        _this.refresh();
-                    });
-                });
-
+                this.setListener()
             },
             forceRefresh() {
                 this.getColumns();
-                this.updateFirebase();
+            },
+            setListener() {
+                this.$firebase.ref('board/'+this.board).on('value', (snapshot) => {
+                    this.hasUpdates = true;
+                    this.refresh();
+                });
             },
             updateFirebase() {
                 this.$firebase.ref('board/'+this.board).set({
                     columns: this.myBoard.columns
+                }, function(error) {
+                    if(error) {
+                        console.error(error);
+                    }
                 });
             }
         },
         mounted() {
             this.getBoard();
             this.getUsers();
-            // this.getColumns();
         }
     }
 </script>

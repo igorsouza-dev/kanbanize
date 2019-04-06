@@ -32,7 +32,8 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/database';
 
 var config = {
     apiKey: "AIzaSyBssSW5A5wd4ASz00-dTYXlp_hUwK2Xh7I",
