@@ -2,6 +2,7 @@
     <div>
 
         <toolbar :title="this.myBoard.name"
+                 :toolbar-data="toolbarData"
                  @newcard="newCard"
                  @newcolumn="newColumn"
                  @refresh="forceRefresh"
@@ -59,6 +60,9 @@
                 canRefresh: true,
                 hasUpdates: false,
                 canUpdate: true,
+                toolbarData: {
+                    expired: false
+                }
             }
         },
         methods: {
@@ -82,8 +86,11 @@
                     if (Array.isArray(response.data)) {
                         this.canUpdate = true;
                         this.myBoard.columns = response.data;
+                        this.toolbarData.expired = false;
                     } else {
                         this.canUpdate = false;
+                        this.toolbarData.expired = true;
+                        this.showSnack("Sua sessão expirou!");
                     }
                 }).catch(error => {
                     console.error(error);
@@ -206,13 +213,15 @@
                 });
             },
             updateFirebase() {
-                this.$firebase.ref('board/'+this.board).set({
-                    columns: this.myBoard.columns
-                }, function(error) {
-                    if(error) {
-                        console.error(error);
-                    }
-                });
+                if(this.canUpdate) {
+                    this.$firebase.ref('board/'+this.board).set({
+                        columns: this.myBoard.columns
+                    }, function(error) {
+                        if(error) {
+                            console.error(error);
+                        }
+                    });
+                }
             }
         },
         mounted() {

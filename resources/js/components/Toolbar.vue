@@ -1,5 +1,5 @@
 <template>
-    <v-toolbar dark color="primary">
+    <v-toolbar dark :color="getColor">
         <v-toolbar-side-icon></v-toolbar-side-icon>
 
         <v-toolbar-title class="white--text">{{this.title}}</v-toolbar-title>
@@ -21,9 +21,16 @@
 <script>
     export default {
         name: "Toolbar",
-        props: ['title'],
+        props: ['title', 'toolbarData'],
         data() {
             return {
+                color: 'primary'
+            }
+        },
+        computed: {
+            getColor() {
+                this.color = this.toolbarData.expired ? 'red' : 'primary';
+                return this.color;
             }
         }
     }

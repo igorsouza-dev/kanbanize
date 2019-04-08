@@ -46,14 +46,14 @@ var config = {
 
 
 // DEV
-var config = {
-    apiKey: "AIzaSyCoZw6r41g2loEqhY3AdzRv221BhK1GVUk",
-    authDomain: "life-kanban-dev.firebaseapp.com",
-    databaseURL: "https://life-kanban-dev.firebaseio.com",
-    projectId: "life-kanban-dev",
-    storageBucket: "",
-    messagingSenderId: "465288829291"
-};
+// var config = {
+//     apiKey: "AIzaSyCoZw6r41g2loEqhY3AdzRv221BhK1GVUk",
+//     authDomain: "life-kanban-dev.firebaseapp.com",
+//     databaseURL: "https://life-kanban-dev.firebaseio.com",
+//     projectId: "life-kanban-dev",
+//     storageBucket: "",
+//     messagingSenderId: "465288829291"
+// };
 
 
 let fb = firebase.initializeApp(config);
