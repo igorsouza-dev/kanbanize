@@ -58,6 +58,7 @@
                 snackText: '',
                 canRefresh: true,
                 hasUpdates: false,
+                canUpdate: true,
             }
         },
         methods: {
@@ -78,7 +79,12 @@
             getColumns() {
                 this.loader = true;
                 axios.get('/api/boards/columns?id='+this.board).then(response => {
-                    this.myBoard.columns = response.data;
+                    if (Array.isArray(response.data)) {
+                        this.canUpdate = true;
+                        this.myBoard.columns = response.data;
+                    } else {
+                        this.canUpdate = false;
+                    }
                 }).catch(error => {
                     console.error(error);
                     this.loader=false;
@@ -193,8 +199,10 @@
             },
             setListener() {
                 this.$firebase.ref('board/'+this.board).on('value', (snapshot) => {
-                    this.hasUpdates = true;
-                    this.refresh();
+                    if(this.canUpdate) {
+                        this.hasUpdates = true;
+                        this.refresh();
+                    }
                 });
             },
             updateFirebase() {
