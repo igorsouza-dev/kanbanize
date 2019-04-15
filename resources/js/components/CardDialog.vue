@@ -26,7 +26,7 @@
                                 </select>
                             </v-flex>
                             <v-flex xs4 sm4 md4>
-                                <v-text-field label="Prazo*" type="date" :rules="[v => !!v || 'O prazo é obrigatório']" required v-model="parentBoard.card.deadline"></v-text-field>
+                                <v-text-field label="Prazo" type="date"  v-model="parentBoard.card.deadline"></v-text-field>
                             </v-flex>
                         </v-layout>
                         <v-layout>

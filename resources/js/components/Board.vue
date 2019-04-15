@@ -10,7 +10,7 @@
                            group="{'columns'}"
                            handle=".column-header"
                            draggable=".column-drag">
-                    <v-flex d-flex lg3 md3 xs12 align-center v-for="column in columns" :key="column.id" class="column-drag">
+                    <v-flex d-flex lg3 md3 xs12 align-start v-for="column in columns" :key="column.id" class="column-drag">
                             <v-card max-width="250" >
                                 <v-card-text>
                                     <div>
@@ -153,7 +153,6 @@
     }
     .dragAreaCards{
         min-height: 75vh;
-        max-height: 75vh;
         overflow-y: auto;
     }
 

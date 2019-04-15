@@ -23,7 +23,7 @@
                         <v-chip text-color="white" @click="editCard" class="chips edit">{{ this.cardData.size }}</v-chip>
                     </v-flex>
                     <v-flex xs7 >
-                        {{ this.cardData.tag }}
+                        {{ this.tag }}
                     </v-flex>
                     <v-flex xs1>
                         <v-sheet class="very-small edit" @click="editCard" :color="getColorPriority" :title="getPriorityDescription" style="border: solid white 1px; padding: 0; margin: 0"></v-sheet>
@@ -45,6 +45,7 @@
                 order_id: this.cardData.order_id,
                 size: this.cardData.size,
                 color: 'primary',
+                tag: '',
                 usuario: {},
                 priorityColor: '',
                 priorityDescription: '',
@@ -97,6 +98,14 @@
             }
         },
         mounted() {
+            if(this.cardData.order_id) {
+                this.tag = this.cardData.order_id;
+            }
+            if(this.cardData.tag) {
+                if(this.tag != '') {
+                    this.tag += ' - '+this.cardData.tag;
+                }
+            }
             if(this.cardData.usuario === undefined) {
                 this.usuario = {
                     nome: '',
